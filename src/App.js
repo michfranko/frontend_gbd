@@ -7,6 +7,7 @@ import SongsPage from './pages/SongsPage';
 import ArtistsPage from './pages/ArtistsPage';
 import ReportsPage from './pages/ReportsPage';
 import AddSongPage from './pages/AddSongPage';
+import AddArtistPage from './pages/AddArtistPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/artists" element={<ArtistsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/add-song" element={<AddSongPage />} />
+          <Route path="/add-artist" element={<AddArtistPage />} />
         </Routes>
       </Layout>
     </Router>

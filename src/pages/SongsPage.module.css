@@ -1,0 +1,34 @@
+.songsContainer {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.songList {
+  list-style: none;
+  padding: 0;
+}
+
+.songItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.songItem:last-child {
+  border-bottom: none;
+}
+
+.songItem strong {
+  font-size: 1.1rem;
+}
+
+.songItem p {
+  margin: 0.5rem 0 0;
+  color: #666;
+}

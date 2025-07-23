@@ -37,41 +37,48 @@
 }
 
 .artistSection {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid #eee;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
 }
 
-.artistCard {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-  padding: 1rem;
-  background: #f9f9f9;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-  position: relative;
-}
-
-.removeArtistButton {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 25px;
-  height: 25px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.addArtistButton {
-  background-color: #28a745;
+.artistSection h3 {
   margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #343a40;
+}
+
+.artistSelection {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: center;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  grid-column: 1 / -1;
+}
+
+.artistSelection select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.addArtistLink {
+  padding: 0.8rem 1rem;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  white-space: nowrap;
 }
 
 .submitButton {

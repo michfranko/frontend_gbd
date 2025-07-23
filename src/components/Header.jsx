@@ -9,7 +9,8 @@ const Header = () => (
       <Link to="/songs">Canciones</Link> | 
       <Link to="/artists">Artistas</Link> | 
       <Link to="/reports">Reportes</Link> |
-      <Link to="/add-song">Agregar Canción</Link>
+      <Link to="/add-song">Agregar Canción</Link> |
+      <Link to="/add-artist">Agregar Artista</Link>
     </nav>
   </header>
 );

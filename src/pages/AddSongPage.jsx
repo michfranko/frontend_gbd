@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import { saveSong } from '../services/songService';
+import { getArtists } from '../services/artistService';
 import styles from './AddSongPage.module.css';
 
 const AddSongPage = () => {
@@ -10,28 +11,26 @@ const AddSongPage = () => {
   const [awards, setAwards] = useState('');
   const [downloads, setDownloads] = useState(0);
   const [audioFile, setAudioFile] = useState(null);
-  const [artists, setArtists] = useState([{ name: '', country: '', birthDate: '', genre: '' }]);
+  const [artistId, setArtistId] = useState('');
+  const [artists, setArtists] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
 
-  const handleArtistChange = (index, event) => {
-    const values = [...artists];
-    values[index][event.target.name] = event.target.value;
-    setArtists(values);
-  };
+  useEffect(() => {
+    const fetchArtists = async () => {
+      const artists = await getArtists();
+      setArtists(artists);
+    };
+    fetchArtists();
+  }, []);
 
-  const handleAddArtist = () => {
-    setArtists([...artists, { name: '', country: '', birthDate: '', genre: '' }]);
-  };
+  const filteredArtists = artists.filter(artist =>
+    artist.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const handleRemoveArtist = (index) => {
-    const values = [...artists];
-    values.splice(index, 1);
-    setArtists(values);
-  };
-
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!songName || !genres || !releaseDate || downloads < 0 || artists.some(a => !a.name)) {
+    if (!songName || !genres || !releaseDate || downloads < 0 || !artistId) {
       alert('Por favor, complete todos los campos requeridos.');
       return;
     }
@@ -42,19 +41,42 @@ const AddSongPage = () => {
       releaseDate,
       awards: awards.split(',').map(a => a.trim()),
       downloads,
-      audioFileName: audioFile ? audioFile.name : null,
-      artists,
+      artistId: artistId,
     };
 
-    saveSong(newSong);
-    alert('Canción guardada con éxito!');
-    navigate('/songs');
+    try {
+      await saveSong(newSong);
+      alert('Canción guardada con éxito!');
+      navigate('/songs');
+    } catch (error) {
+      console.error('Error saving song:', error);
+      alert('Error al guardar la canción.');
+    }
   };
 
   return (
     <div className={styles.formContainer}>
       <h2>Agregar Nueva Canción</h2>
       <form onSubmit={handleSubmit}>
+        <div className={styles.artistSection}>
+          <h3>Artista</h3>
+          <div className={styles.artistSelection}>
+            <input
+              type="text"
+              placeholder="Buscar artista..."
+              className={styles.searchInput}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select value={artistId} onChange={(e) => setArtistId(e.target.value)} required>
+              <option value="">Seleccione un artista</option>
+              {filteredArtists.map(artist => (
+                <option key={artist._id} value={artist._id}>{artist.name}</option>
+              ))}
+            </select>
+            <Link to="/add-artist" className={styles.addArtistLink}>Agregar Nuevo Artista</Link>
+          </div>
+        </div>
         <div className={styles.formGroup}>
           <label>Nombre de la canción:</label>
           <input type="text" value={songName} onChange={(e) => setSongName(e.target.value)} required />
@@ -78,20 +100,6 @@ const AddSongPage = () => {
         <div className={styles.formGroup}>
           <label>Archivo de audio (.mp3):</label>
           <input type="file" accept=".mp3" onChange={(e) => setAudioFile(e.target.files[0])} />
-        </div>
-
-        <div className={styles.artistSection}>
-          <h3>Artistas</h3>
-          {artists.map((artist, index) => (
-            <div key={index} className={styles.artistCard}>
-              <input type="text" name="name" placeholder="Nombre del artista" value={artist.name} onChange={(e) => handleArtistChange(index, e)} required />
-              <input type="text" name="country" placeholder="País" value={artist.country} onChange={(e) => handleArtistChange(index, e)} />
-              <input type="date" name="birthDate" placeholder="Fecha de nacimiento" value={artist.birthDate} onChange={(e) => handleArtistChange(index, e)} />
-              <input type="text" name="genre" placeholder="Género musical" value={artist.genre} onChange={(e) => handleArtistChange(index, e)} />
-              {artists.length > 1 && <button type="button" className={styles.removeArtistButton} onClick={() => handleRemoveArtist(index)}>X</button>}
-            </div>
-          ))}
-          <button type="button" className={styles.addArtistButton} onClick={handleAddArtist}>Agregar Artista</button>
         </div>
 
         <button type="submit" className={styles.submitButton}>Guardar Canción</button>

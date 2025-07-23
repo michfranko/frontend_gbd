@@ -1,23 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { getSongs } from '../services/songService';
+import { Link } from 'react-router-dom';
+import { getArtists } from '../services/artistService';
+import styles from './ArtistsPage.module.css';
 
 const ArtistsPage = () => {
   const [artists, setArtists] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    const songs = getSongs();
-    const allArtists = songs.flatMap(song => song.artists);
-    const unique = Array.from(new Set(allArtists.map(a => a.name)))
-      .map(name => allArtists.find(a => a.name === name));
-    setArtists(unique);
+    const fetchArtists = async () => {
+      const artists = await getArtists();
+      setArtists(artists);
+    };
+    fetchArtists();
   }, []);
 
+  const filteredArtists = artists.filter(artist =>
+    artist.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
-      <h2>🎤 Artistas Registrados</h2>
-      <ul>
-        {artists.map((a, i) => (
-          <li key={i}>{a.name} ({a.country})</li>
+    <div className={styles.artistsContainer}>
+      <div className={styles.header}>
+        <h2>🎤 Artistas Registrados</h2>
+        <Link to="/add-artist" className={styles.addButton}>Agregar Artista</Link>
+      </div>
+      <input
+        type="text"
+        placeholder="Buscar artistas..."
+        className={styles.searchInput}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      <ul className={styles.artistList}>
+        {filteredArtists.map((artist) => (
+          <li key={artist._id} className={styles.artistItem}>
+            {artist.name}
+          </li>
         ))}
       </ul>
     </div>

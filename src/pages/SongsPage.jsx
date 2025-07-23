@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { getSongs } from '../services/songService';
+import styles from './SongsPage.module.css';
 
 const SongsPage = () => {
   const [songs, setSongs] = useState([]);
 
   useEffect(() => {
-    setSongs(getSongs());
+    const fetchSongs = async () => {
+      const songs = await getSongs();
+      setSongs(songs);
+    };
+    fetchSongs();
   }, []);
 
   return (
-    <div>
+    <div className={styles.songsContainer}>
       <h2>🎶 Lista de Canciones</h2>
-      <ul>
-        {songs.map((song, index) => (
-          <li key={index}>
-            <strong>{song.name}</strong> - Géneros: {song.genres.join(', ')}<br />
-            Artistas: {song.artists.map(a => a.name).join(', ')}
+      <ul className={styles.songList}>
+        {songs.map((song) => (
+          <li key={song._id} className={styles.songItem}>
+            <div>
+              <strong>{song.name}</strong> by {song.artist.name}
+              <p>Géneros: {song.genres.join(', ')}</p>
+            </div>
+            <audio controls src={`http://localhost:5000/songs/audio/${song.audioFileId}`} />
           </li>
         ))}
       </ul>
