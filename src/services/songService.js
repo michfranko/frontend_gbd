@@ -17,10 +17,14 @@ export const getSongs = async (searchTerm = '') => {
 
 /**
  * Guarda una nueva canción en la base de datos.
- * @param {object} songData - Los datos de la canción a guardar.
+ * @param {FormData} songData - Los datos de la canción a guardar, incluyendo el archivo de audio.
  * @returns {Promise<object>} - Una promesa que resuelve a los datos de la respuesta.
  */
 export const saveSong = async (songData) => {
-  const response = await axios.post(`${API_URL}/add`, songData);
+  const response = await axios.post(`${API_URL}/add`, songData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return response.data;
 };

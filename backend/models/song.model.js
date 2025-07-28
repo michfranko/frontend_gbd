@@ -8,7 +8,7 @@ const songSchema = new Schema({
   releaseDate: { type: Date, required: true },
   awards: [{ type: String, trim: true }],
   downloads: { type: Number, default: 0 },
-  audioFileId: { type: mongoose.Schema.Types.ObjectId },
+  audioFileUrl: { type: String, required: true },
   artist: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist', required: true },
 }, {
   timestamps: true,

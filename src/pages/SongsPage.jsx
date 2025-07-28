@@ -39,7 +39,7 @@ const SongsPage = () => {
               <strong>{song.name}</strong> by {song.artist.name}
               <p>Géneros: {song.genres.join(', ')}</p>
             </div>
-            <audio controls src={`http://localhost:5000/songs/audio/${song.audioFileId}`} />
+            <audio controls src={song.audioFileUrl} />
           </li>
         ))}
       </ul>

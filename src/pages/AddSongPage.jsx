@@ -30,22 +30,22 @@ const AddSongPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!songName || !genres || !releaseDate || downloads < 0 || !artistId) {
-      alert('Por favor, complete todos los campos requeridos.');
+    if (!songName || !genres || !releaseDate || downloads < 0 || !artistId || !audioFile) {
+      alert('Por favor, complete todos los campos requeridos y seleccione un archivo de audio.');
       return;
     }
 
-    const newSong = {
-      name: songName,
-      genres: genres.split(',').map(g => g.trim()),
-      releaseDate,
-      awards: awards.split(',').map(a => a.trim()),
-      downloads,
-      artistId: artistId,
-    };
+    const formData = new FormData();
+    formData.append('name', songName);
+    formData.append('genres', genres);
+    formData.append('releaseDate', releaseDate);
+    formData.append('awards', awards);
+    formData.append('downloads', downloads);
+    formData.append('artistId', artistId);
+    formData.append('audioFile', audioFile);
 
     try {
-      await saveSong(newSong);
+      await saveSong(formData);
       alert('Canción guardada con éxito!');
       navigate('/songs');
     } catch (error) {

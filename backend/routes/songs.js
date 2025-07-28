@@ -1,5 +1,27 @@
 const router = require('express').Router();
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 let Song = require('../models/song.model');
+
+// Configurar Cloudinary
+cloudinary.config({
+  cloud_name: 'dpxcsnaky',
+  api_key: '496845855725494',
+  api_secret: 'lQI0WMaIHLCFvyM18T7YVcs9MJU'
+});
+
+// Configurar Multer para usar Cloudinary
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'songs',
+    format: async (req, file) => 'mp3', // supports promises as well
+    public_id: (req, file) => file.originalname,
+  },
+});
+
+const upload = multer({ storage: storage });
 
 // Obtener todas las canciones o filtrar por nombre
 router.route('/').get((req, res) => {
@@ -16,24 +38,29 @@ router.route('/').get((req, res) => {
 });
 
 // Añadir una nueva canción
-router.route('/add').post((req, res) => {
-  const { name, genres, releaseDate, awards, downloads, artistId } = req.body;
+router.route('/add').post(upload.single('audioFile'), async (req, res) => {
+  try {
+    const { name, genres, releaseDate, awards, downloads, artistId } = req.body;
+    const audioFileUrl = req.file.path; // URL del archivo en Cloudinary
 
-  // Crear una nueva instancia de Canción con los datos del cuerpo de la solicitud
-  const newSong = new Song({
-    name,
-    genres,
-    releaseDate,
-    awards,
-    downloads,
-    artist: artistId,
-    // audioFileId se agregará más tarde
-  });
+    // Crear una nueva instancia de Canción con los datos del cuerpo de la solicitud
+    const newSong = new Song({
+      name,
+      genres,
+      releaseDate,
+      awards,
+      downloads,
+      artist: artistId,
+      audioFileUrl,
+    });
 
-  // Guardar la nueva canción en la base de datos
-  newSong.save()
-    .then(() => res.json('¡Canción agregada!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    // Guardar la nueva canción en la base de datos
+    await newSong.save();
+    res.json('¡Canción agregada!');
+  } catch (err) {
+    console.error('Error adding song:', err);
+    res.status(500).json('Error: ' + err.message);
+  }
 });
 
 module.exports = router;
