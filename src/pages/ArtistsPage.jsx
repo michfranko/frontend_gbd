@@ -4,20 +4,20 @@ import { getArtists } from '../services/artistService';
 import styles from './ArtistsPage.module.css';
 
 const ArtistsPage = () => {
+  // Estado para almacenar la lista de artistas
   const [artists, setArtists] = useState([]);
+  // Estado para almacenar el término de búsqueda
   const [searchTerm, setSearchTerm] = useState('');
 
+  // useEffect para buscar artistas cuando el componente se monta o el término de búsqueda cambia
   useEffect(() => {
     const fetchArtists = async () => {
-      const artists = await getArtists();
+      // Llama al servicio para obtener los artistas, pasando el término de búsqueda
+      const artists = await getArtists(searchTerm);
       setArtists(artists);
     };
     fetchArtists();
-  }, []);
-
-  const filteredArtists = artists.filter(artist =>
-    artist.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  }, [searchTerm]);
 
   return (
     <div className={styles.artistsContainer}>
@@ -33,7 +33,7 @@ const ArtistsPage = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <ul className={styles.artistList}>
-        {filteredArtists.map((artist) => (
+        {artists.map((artist) => (
           <li key={artist._id} className={styles.artistItem}>
             {artist.name}
           </li>
