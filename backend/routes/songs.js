@@ -16,8 +16,9 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'songs',
-    format: async (req, file) => 'mp3', // supports promises as well
+    format: async (req, file) => 'mp3',
     public_id: (req, file) => file.originalname,
+    resource_type: 'video', // Cloudinary trata el audio como video
   },
 });
 
@@ -58,7 +59,7 @@ router.route('/add').post(upload.single('audioFile'), async (req, res) => {
     await newSong.save();
     res.json('¡Canción agregada!');
   } catch (err) {
-    console.error('Error adding song:', err);
+    console.error('Error adding song:', err.stack);
     res.status(500).json('Error: ' + err.message);
   }
 });
