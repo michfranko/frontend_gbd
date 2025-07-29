@@ -35,7 +35,11 @@ const ArtistsPage = () => {
       <ul className={styles.artistList}>
         {artists.map((artist) => (
           <li key={artist._id} className={styles.artistItem}>
-            {artist.name}
+            <strong>{artist.name}</strong>
+            <p>País: {artist.country}</p>
+            <p>Fecha de Nacimiento: {new Date(artist.birthDate).toLocaleDateString()}</p>
+            <p>Género Musical: {artist.genre}</p>
+            <p>Género: {artist.gender}</p>
           </li>
         ))}
       </ul>

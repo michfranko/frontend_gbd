@@ -1,0 +1,45 @@
+.reportsContainer {
+  padding: 2rem;
+  background-color: #f4f7f6;
+}
+
+.reportSection {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reportSection h3 {
+  margin-top: 0;
+}
+
+.reportSection input,
+.reportSection select,
+.reportSection button {
+  margin-right: 1rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.reportSection button {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.reportSection button:hover {
+  background-color: #0056b3;
+}
+
+.reportSection ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.reportSection li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}

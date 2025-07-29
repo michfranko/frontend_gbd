@@ -8,17 +8,18 @@ const AddArtistPage = () => {
   const [country, setCountry] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [genre, setGenre] = useState('');
+  const [gender, setGender] = useState('Hombre');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!name || !country || !birthDate || !genre) {
+    if (!name || !country || !birthDate || !genre || !gender) {
       alert('Por favor, complete todos los campos.');
       return;
     }
 
     try {
-      await saveArtist({ name, country, birthDate, genre });
+      await saveArtist({ name, country, birthDate, genre, gender });
       alert('Artista guardado con éxito!');
       navigate('/artists');
     } catch (error) {
@@ -46,6 +47,13 @@ const AddArtistPage = () => {
         <div className={styles.formGroup}>
           <label>Género musical:</label>
           <input type="text" value={genre} onChange={(e) => setGenre(e.target.value)} required />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Género:</label>
+          <select value={gender} onChange={(e) => setGender(e.target.value)} required>
+            <option value="Hombre">Hombre</option>
+            <option value="Mujer">Mujer</option>
+          </select>
         </div>
         <button type="submit" className={styles.submitButton}>Guardar Artista</button>
       </form>

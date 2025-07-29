@@ -28,3 +28,30 @@ export const saveSong = async (songData) => {
   });
   return response.data;
 };
+
+export const getMostDownloadedSongs = async () => {
+  const response = await axios.get(`${API_URL}/reports/most-downloaded`);
+  return response.data;
+};
+
+export const getSongsByReleaseDate = async (startDate, endDate) => {
+  const response = await axios.get(`${API_URL}/reports/by-release-date`, {
+    params: { startDate, endDate },
+  });
+  return response.data;
+};
+
+export const getSongsByArtist = async (artistId) => {
+  const response = await axios.get(`${API_URL}/reports/by-artist/${artistId}`);
+  return response.data;
+};
+
+export const getSongsByGenre = async (genre) => {
+  const response = await axios.get(`${API_URL}/reports/by-genre/${genre}`);
+  return response.data;
+};
+
+export const getCollaboratorsByArtist = async (artistId) => {
+  const response = await axios.get(`${API_URL}/reports/collaborators-by-artist/${artistId}`);
+  return response.data;
+};

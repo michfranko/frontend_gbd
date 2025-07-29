@@ -10,6 +10,7 @@ const songSchema = new Schema({
   downloads: { type: Number, default: 0 },
   audioFileUrl: { type: String, required: true },
   artist: { type: mongoose.Schema.Types.ObjectId, ref: 'Artist', required: true },
+  collaborators: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Artist' }],
 }, {
   timestamps: true,
 });

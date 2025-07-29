@@ -16,7 +16,7 @@ router.route('/').get((req, res) => {
 
 // Añadir un nuevo artista
 router.route('/add').post((req, res) => {
-  const { name, country, birthDate, genre } = req.body;
+  const { name, country, birthDate, genre, gender } = req.body;
 
   // Crear una nueva instancia de Artista con los datos del cuerpo de la solicitud
   const newArtist = new Artist({
@@ -24,6 +24,7 @@ router.route('/add').post((req, res) => {
     country,
     birthDate: Date.parse(birthDate),
     genre,
+    gender,
   });
 
   // Guardar el nuevo artista en la base de datos

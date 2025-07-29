@@ -12,6 +12,7 @@ const AddSongPage = () => {
   const [downloads, setDownloads] = useState(0);
   const [audioFile, setAudioFile] = useState(null);
   const [artistId, setArtistId] = useState('');
+  const [collaborators, setCollaborators] = useState([]);
   const [artists, setArtists] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -28,6 +29,13 @@ const AddSongPage = () => {
     artist.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const availableCollaborators = artists.filter(artist => artist._id !== artistId);
+
+  const handleCollaboratorChange = (event) => {
+    const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
+    setCollaborators(selectedOptions);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!songName || !genres || !releaseDate || downloads < 0 || !artistId || !audioFile) {
@@ -43,6 +51,9 @@ const AddSongPage = () => {
     formData.append('downloads', downloads);
     formData.append('artistId', artistId);
     formData.append('audioFile', audioFile);
+    collaborators.forEach(collaboratorId => {
+      formData.append('collaborators[]', collaboratorId);
+    });
 
     try {
       await saveSong(formData);
@@ -75,6 +86,16 @@ const AddSongPage = () => {
               ))}
             </select>
             <Link to="/add-artist" className={styles.addArtistLink}>Agregar Nuevo Artista</Link>
+          </div>
+        </div>
+        <div className={styles.artistSection}>
+          <h3>Colaboradores</h3>
+          <div className={styles.artistSelection}>
+            <select multiple value={collaborators} onChange={handleCollaboratorChange} className={styles.collaboratorSelect}>
+              {availableCollaborators.map(artist => (
+                <option key={artist._id} value={artist._id}>{artist.name}</option>
+              ))}
+            </select>
           </div>
         </div>
         <div className={styles.formGroup}>

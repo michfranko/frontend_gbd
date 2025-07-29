@@ -7,6 +7,7 @@ const artistSchema = new Schema({
   country: { type: String, required: true, trim: true },
   birthDate: { type: Date, required: true },
   genre: { type: String, required: true, trim: true },
+  gender: { type: String, required: true, enum: ['Hombre', 'Mujer'] },
 }, {
   timestamps: true,
 });

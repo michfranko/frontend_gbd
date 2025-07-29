@@ -37,7 +37,13 @@ const SongsPage = () => {
           <li key={song._id} className={styles.songItem}>
             <div>
               <strong>{song.name}</strong> by {song.artist.name}
+              {song.collaborators && song.collaborators.length > 0 && (
+                <em> feat. {song.collaborators.map(c => c.name).join(', ')}</em>
+              )}
               <p>Géneros: {song.genres.join(', ')}</p>
+              <p>Fecha de Lanzamiento: {new Date(song.releaseDate).toLocaleDateString()}</p>
+              <p>Premios: {song.awards.join(', ')}</p>
+              <p>Descargas: {song.downloads}</p>
             </div>
             <audio controls src={song.audioFileUrl} />
           </li>
